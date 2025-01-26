@@ -1,4 +1,5 @@
-
+# Mise à jour du script pour éviter l'utilisation de st.experimental_data_editor
+updated_streamlit_script = """
 import streamlit as st
 import pandas as pd
 
@@ -45,24 +46,31 @@ def calculate_savings(income, expenses):
 # Titre de l'application
 st.title("Gestion de Budget Personnel")
 
-# Section pour afficher les revenus
+# Section pour afficher les revenus (tableau non éditable pour éviter les erreurs)
 st.header("Revenus")
-income_data_editable = st.experimental_data_editor(income_data, num_rows="dynamic", key="income")
+st.dataframe(income_data)
 
-# Section pour afficher les dépenses
+# Section pour afficher les dépenses (tableau non éditable pour éviter les erreurs)
 st.header("Dépenses")
-expenses_data_editable = st.experimental_data_editor(expenses_data, num_rows="dynamic", key="expenses")
+st.dataframe(expenses_data)
 
 # Résumé des économies potentielles
 st.header("Résumé")
-savings = calculate_savings(income_data_editable, expenses_data_editable)
+savings = calculate_savings(income_data, expenses_data)
 st.subheader(f"Économies potentielles: {savings:.2f} €")
 
 # Graphiques interactifs
 st.header("Visualisations")
 chart_data = pd.DataFrame({
-    "Revenus": income_data_editable.iloc[:-1, 1:].sum(axis=0),
-    "Dépenses": expenses_data_editable.iloc[:-1, 1:].sum(axis=0)
+    "Revenus": income_data.iloc[:-1, 1:].sum(axis=0),
+    "Dépenses": expenses_data.iloc[:-1, 1:].sum(axis=0)
 }, index=income_data.columns[1:])
 st.line_chart(chart_data)
+"""
 
+# Sauvegarder le script mis à jour pour l'utilisateur
+updated_script_path = "/mnt/data/budget_app_streamlit_fixed.py"
+with open(updated_script_path, "w") as file:
+    file.write(updated_streamlit_script)
+
+updated_script_path  # Retourner le chemin du script mis à jour pour l'utilisateur
