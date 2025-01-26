@@ -1,5 +1,4 @@
-# Mise à jour du script pour éviter l'utilisation de st.experimental_data_editor
-updated_streamlit_script = """
+
 import streamlit as st
 import pandas as pd
 
